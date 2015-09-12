@@ -1,6 +1,8 @@
 expect = require('chai').expect
 
-streamTweets = require '../index'
+process.env.NODE_ENV = 'test'
+
+streamTweets = require('../index').main
 
 twitterKeys = {
   consumer_key : 'XXXXXXXXXXXXXXXXXXXXXXXXX'
