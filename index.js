@@ -94,7 +94,10 @@
     };
 
     _private = {
-      isStrValidJson: isStrValidJson
+      isStrValidJson: isStrValidJson,
+      formatResults: formatResults,
+      makeRequest: makeRequest,
+      stream: stream
     };
 
     return StreamTweets;

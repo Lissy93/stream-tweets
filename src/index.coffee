@@ -80,7 +80,12 @@ class StreamTweets
     makeRequest params, @credentials, (results) ->
       cb formatResults(results)
 
-  _private = {isStrValidJson: isStrValidJson}
+  _private = {
+    isStrValidJson: isStrValidJson
+    formatResults:  formatResults
+    makeRequest:  makeRequest
+    stream:  stream
+  }
 
 
 
