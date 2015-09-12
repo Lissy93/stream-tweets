@@ -4,6 +4,8 @@ process.env.NODE_ENV = 'test'
 
 streamTweets = require '../index'
 
+longResult1 = require('./data-stubs/long-result1')
+
 
 describe 'Check the private utility methods of the module', ()->
 
@@ -22,3 +24,8 @@ describe 'Check the private utility methods of the module', ()->
     expect(isStrValidJson('{"dinosaurs":"are":"awesome"')).equal(false)
 
 
+  it 'Should correclt format the full result returned by Twitter', ()->
+    formatResults = streamTweets._private.formatResults
+    expect(formatResults(longResult1)).to.be.a('object')
+
+    
