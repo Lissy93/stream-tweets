@@ -84,7 +84,6 @@ class StreamTweets
     isStrValidJson: isStrValidJson
     formatResults:  formatResults
     makeRequest:  makeRequest
-    stream:  stream
   }
 
 

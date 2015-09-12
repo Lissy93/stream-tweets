@@ -96,8 +96,7 @@
     _private = {
       isStrValidJson: isStrValidJson,
       formatResults: formatResults,
-      makeRequest: makeRequest,
-      stream: stream
+      makeRequest: makeRequest
     };
 
     return StreamTweets;
