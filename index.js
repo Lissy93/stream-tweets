@@ -1,1 +1,102 @@
-(function(){var t,e,r;r=require("request"),e=require("querystring"),t=function(){function t(t,e){this.credentials=t,this.shouldFormatResults=null!=e?e:!0,s=this.shouldFormatResults}var n,o,s;return s=null,o=function(t,e,n){var o,s,c;return o="",c="\r",t.oauth={callback:"/",consumer_key:e.consumer_key,consumer_secret:e.consumer_secret,token:e.token,token_secret:e.token_secret},s=r.post(t,function(t,e,r){return t?console.error(t):void 0}),s.on("data",function(t){var e,r,s;return o+=t.toString(),s=o.indexOf(c),e=-1!==s,e?(r=o.slice(0,s),n(JSON.parse(r)),o=o.slice(s+1)):void 0})},n=function(t){return s?{date:t.created_at,body:t.text,location:{geo:t.geo,coordinates:t.coordinates,place:t.place},"retweet-count":t.retweet_count,"favorited-count":t.favorite_count,lang:t.lang}:t},t.prototype.stream=function(t,r){var s;return"string"==typeof t?s="track="+t:"object"==typeof t&&(s=e.stringify(t)),t={uri:"https://stream.twitter.com/1.1/statuses/filter.json?"+s},o(t,this.credentials,function(t){return r(n(t))})},t}(),module.exports=t}).call(this);
+(function() {
+  var StreamTweets, querystring, request;
+
+  request = require('request');
+
+  querystring = require('querystring');
+
+  StreamTweets = (function() {
+    var formatResults, isStrValidJson, makeRequest, shouldFormatResults;
+
+    shouldFormatResults = null;
+
+    function StreamTweets(credentials1, shouldFormatResults1) {
+      this.credentials = credentials1;
+      this.shouldFormatResults = shouldFormatResults1 != null ? shouldFormatResults1 : true;
+      shouldFormatResults = this.shouldFormatResults;
+    }
+
+    makeRequest = function(params, credentials, callback) {
+      var message, req, separator;
+      message = "";
+      separator = "\r";
+      params.oauth = {
+        callback: '/',
+        consumer_key: credentials.consumer_key,
+        consumer_secret: credentials.consumer_secret,
+        token: credentials.token,
+        token_secret: credentials.token_secret
+      };
+      req = request.post(params, function(err) {
+        if (err) {
+          return console.error(err);
+        }
+      });
+      return req.on('data', function(buffer) {
+        var didFindTweet, tweet, tweetSeparatorIndex;
+        message += buffer.toString();
+        tweetSeparatorIndex = message.indexOf(separator);
+        didFindTweet = tweetSeparatorIndex !== -1;
+        if (didFindTweet) {
+          tweet = message.slice(0, tweetSeparatorIndex);
+          if (isStrValidJson(tweet)) {
+            callback(JSON.parse(tweet));
+          }
+          return message = message.slice(tweetSeparatorIndex + 1);
+        }
+      });
+    };
+
+    formatResults = function(twitterResults) {
+      if (!shouldFormatResults) {
+        return twitterResults;
+      }
+      return {
+        'date': twitterResults.created_at,
+        'body': twitterResults.text,
+        'location': {
+          'geo': twitterResults.geo,
+          'coordinates': twitterResults.coordinates,
+          'place': twitterResults.place
+        },
+        'retweet-count': twitterResults.retweet_count,
+        'favorited-count': twitterResults.favorite_count,
+        'lang': twitterResults.lang
+      };
+    };
+
+    isStrValidJson = function(str) {
+      var e, error;
+      try {
+        JSON.parse(str);
+      } catch (error) {
+        e = error;
+        return false;
+      }
+      return true;
+    };
+
+    StreamTweets.prototype.stream = function(params, cb) {
+      var urlParams;
+      if (typeof params === 'string') {
+        urlParams = 'track=' + params;
+      } else if (typeof params === 'object') {
+        urlParams = querystring.stringify(params);
+      }
+      params = {
+        uri: 'https://stream.twitter.com/1.1/statuses/filter.json?' + urlParams
+      };
+      return makeRequest(params, this.credentials, function(results) {
+        return cb(formatResults(results));
+      });
+    };
+
+    return StreamTweets;
+
+  })();
+
+  module.exports = StreamTweets;
+
+}).call(this);
+/* (C) Alicia Sykes <alicia@aliciasykes.com> 2015           *\
+\* MIT License. Read full license at: https://goo.gl/IL4lQJ */

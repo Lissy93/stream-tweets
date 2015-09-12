@@ -23,7 +23,7 @@ class StreamTweets
       token_secret : credentials.token_secret
     }
 
-    req = request.post(params, (err, response, body) ->
+    req = request.post(params, (err) ->
       console.error err if err
     )
 
@@ -34,7 +34,8 @@ class StreamTweets
 
       if didFindTweet
         tweet = message.slice(0, tweetSeparatorIndex)
-        callback JSON.parse(tweet)
+        if isStrValidJson(tweet)
+          callback JSON.parse(tweet)
         message = message.slice(tweetSeparatorIndex + 1)
 
 
@@ -55,7 +56,18 @@ class StreamTweets
       'lang' : twitterResults.lang
     }
 
+  # Check if the string would be valid json
+  isStrValidJson = (str) ->
+    try
+      JSON.parse str
+    catch e
+      return false
+    true
+
+
+  # Public function, to be directly called by main program
   stream: (params, cb) ->
+    #Check what type of params we working with, and format appropriately
     if typeof params is 'string'
       urlParams = 'track='+params
     else if typeof params is 'object'
