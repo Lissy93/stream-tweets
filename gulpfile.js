@@ -19,6 +19,9 @@ var istanbul= require('gulp-istanbul');
 var watch   = require('gulp-watch');
 require('coffee-script/register');
 
+var footerTxt = "\/* (C) Alicia Sykes <alicia@aliciasykes.com> 2015           " +
+    "*\\\r\n\\* MIT License. Read full license at: https:\/\/goo.gl\/IL4lQJ *\/";
+
 /* Delete the files currently in finished directory */
 gulp.task('clean', function (cb) {
     del(['./index.js'], cb);
@@ -30,8 +33,8 @@ gulp.task('build', ['clean'],  function(){
         .pipe(lint())
         .pipe(lint.reporter())
         .pipe(coffee())
-        .pipe(uglify())
-        .pipe(footer(''))
+        //.pipe(uglify())
+        .pipe(footer(footerTxt))
         .pipe(size())
         .pipe(gulp.dest('./'))
 });
