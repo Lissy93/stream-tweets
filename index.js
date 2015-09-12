@@ -1,9 +1,11 @@
 (function() {
-  var StreamTweets, querystring, request;
+  var StreamTweets, _private, querystring, request;
 
   request = require('request');
 
   querystring = require('querystring');
+
+  _private = {};
 
   StreamTweets = (function() {
     var formatResults, isStrValidJson, makeRequest, shouldFormatResults;
@@ -91,11 +93,22 @@
       });
     };
 
+    _private = {
+      isStrValidJson: isStrValidJson
+    };
+
     return StreamTweets;
 
   })();
 
   module.exports = StreamTweets;
+
+  if (process.env.NODE_ENV === 'test') {
+    module.exports = {
+      main: StreamTweets,
+      _private: _private
+    };
+  }
 
 }).call(this);
 /* (C) Alicia Sykes <alicia@aliciasykes.com> 2015           *\

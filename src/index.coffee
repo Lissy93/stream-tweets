@@ -1,6 +1,7 @@
 request = require 'request'
 querystring = require 'querystring'
 
+_private = {}
 
 class StreamTweets
 
@@ -79,4 +80,16 @@ class StreamTweets
     makeRequest params, @credentials, (results) ->
       cb formatResults(results)
 
+  _private = {isStrValidJson: isStrValidJson}
+
+
+
+
 module.exports = StreamTweets
+
+# If we're developing/ testing then export the private methods too
+if process.env.NODE_ENV == 'test'
+  module.exports = {
+    main: StreamTweets
+    _private: _private
+  }
