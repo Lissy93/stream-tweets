@@ -55,10 +55,16 @@ class StreamTweets
       'lang' : twitterResults.lang
     }
 
-  stream: (cb) ->
-    params = { uri: 'https://stream.twitter.com/1.1/statuses/filter.json?track=twitter'}
+  stream: (params, cb) ->
+    if typeof params is 'string'
+      urlParams = 'track='+params
+    else if typeof params is 'object'
+      urlParams = querystring.stringify(params)
+
+    params = {
+      uri: 'https://stream.twitter.com/1.1/statuses/filter.json?'+urlParams
+    }
     makeRequest params, @credentials, (results) ->
       cb formatResults(results)
-
 
 module.exports = StreamTweets
