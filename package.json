@@ -1,6 +1,6 @@
 {
   "name": "stream-tweets",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A Node module that uses the Twitter API to stream Tweets in real-time",
   "main": "index.js",
   "scripts": {
