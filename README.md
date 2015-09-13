@@ -106,6 +106,6 @@ MIT (C) [Alicia Sykes]
 [//]: # (LINKS)
    [Twitter streaming API documentation]: <https://dev.twitter.com/streaming/overview/request-parameters>
    [Continuous integration testing report on Travis]: <https://travis-ci.org/Lissy93/stream-tweets>
-   [View full license]: <LICENSE.md>
+   [View full license]: <LICENSE.MD>
    [Alicia Sykes]: <http://aliciasykes.com>
 
