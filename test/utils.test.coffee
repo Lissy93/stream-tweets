@@ -28,4 +28,8 @@ describe 'Check the private utility methods of the module', ()->
     formatResults = streamTweets._private.formatResults
     expect(formatResults(longResult1)).to.be.a('object')
 
-    
+  it 'Should handle errors in the input of make request', ()->
+    makeRequest = streamTweets._private.makeRequest
+    # todo
+
+
