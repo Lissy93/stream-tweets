@@ -42,20 +42,47 @@ class StreamTweets
 
   # Processes the results to get rid of not needed data
   formatResults = (twitterResults) ->
+
+    prepareLocation(twitterResults)
+
     if !shouldFormatResults
       return twitterResults
     {
       'date': twitterResults.created_at,
       'body': twitterResults.text
-      'location': {
-        'geo' : twitterResults.geo
-        'coordinates' : twitterResults.coordinates
-        'place' : twitterResults.place
-      }
+      'location': prepareLocation(twitterResults)
       'retweet-count' : twitterResults.retweet_count
       'favorited-count' : twitterResults.favorite_count
       'lang' : twitterResults.lang
     }
+
+
+  # Get location
+  prepareLocation = (body) ->
+    location =
+      place_name: '_'
+      location: { lat: 0.0000000, lng: 0.0000000 }
+
+    # Check Coordinates object
+    if body.coordinates?
+      location.location.lat = body.coordinates.coordinates[1]
+      location.location.lng = body.coordinates.coordinates[0]
+    else if body.geo?
+      location.location.lat = body.geo.coordinates[0]
+      location.location.lng = body.geo.coordinates[1]
+
+    # Check for place name
+    if body.place?
+      location.place_name = body.place.name
+    else if body.user?
+      location.place_name = body.user.location
+
+    location
+
+
+
+
+
 
   # Check if the string would be valid json
   isStrValidJson = (str) ->

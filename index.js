@@ -8,7 +8,7 @@
   _private = {};
 
   StreamTweets = (function() {
-    var formatResults, isStrValidJson, makeRequest, shouldFormatResults;
+    var formatResults, isStrValidJson, makeRequest, prepareLocation, shouldFormatResults;
 
     shouldFormatResults = null;
 
@@ -50,21 +50,42 @@
     };
 
     formatResults = function(twitterResults) {
+      prepareLocation(twitterResults);
       if (!shouldFormatResults) {
         return twitterResults;
       }
       return {
         'date': twitterResults.created_at,
         'body': twitterResults.text,
-        'location': {
-          'geo': twitterResults.geo,
-          'coordinates': twitterResults.coordinates,
-          'place': twitterResults.place
-        },
+        'location': prepareLocation(twitterResults),
         'retweet-count': twitterResults.retweet_count,
         'favorited-count': twitterResults.favorite_count,
         'lang': twitterResults.lang
       };
+    };
+
+    prepareLocation = function(body) {
+      var location;
+      location = {
+        place_name: '_',
+        location: {
+          lat: 0.0000000,
+          lng: 0.0000000
+        }
+      };
+      if (body.coordinates != null) {
+        location.location.lat = body.coordinates.coordinates[1];
+        location.location.lng = body.coordinates.coordinates[0];
+      } else if (body.geo != null) {
+        location.location.lat = body.geo.coordinates[0];
+        location.location.lng = body.geo.coordinates[1];
+      }
+      if (body.place != null) {
+        location.place_name = body.place.name;
+      } else if (body.user != null) {
+        location.place_name = body.user.location;
+      }
+      return location;
     };
 
     isStrValidJson = function(str) {
