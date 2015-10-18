@@ -8,7 +8,6 @@
 
 /* Require the node modules */
 var gulp    = require('gulp');
-var uglify  = require('gulp-uglify');
 var coffee  = require('gulp-coffee');
 var lint    = require('gulp-coffeelint');
 var del     = require('del');
@@ -29,7 +28,7 @@ gulp.task('clean', function (cb) {
 
 /* Lint, compile and minify CoffeeScript */
 gulp.task('build', ['clean'],  function(){
-    return gulp.src('./src/**/*.coffee')
+    return gulp.src('./*.coffee')
         .pipe(lint())
         .pipe(lint.reporter())
         .pipe(coffee())
@@ -62,7 +61,7 @@ gulp.task('test', function (cb) {
 
 /* Watch for changes and refresh */
 gulp.task('watch', function(){
-    gulp.watch('./src/**/*.coffee', ['test-after-build']);
+    gulp.watch('./**/*.coffee', ['test-after-build']);
     gulp.watch('./test/**/*.coffee', ['test']);
 });
 
