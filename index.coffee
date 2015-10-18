@@ -43,8 +43,6 @@ class StreamTweets
   # Processes the results to get rid of not needed data
   formatResults = (twitterResults) ->
 
-    prepareLocation(twitterResults)
-
     if !shouldFormatResults
       return twitterResults
     {
@@ -80,26 +78,18 @@ class StreamTweets
     location
 
 
-
-
-
-
   # Check if the string would be valid json
   isStrValidJson = (str) ->
-    try
-      JSON.parse str
-    catch e
-      return false
+    try JSON.parse str
+    catch e then return false
     true
 
 
   # Public function, to be directly called by main program
   stream: (params, cb) ->
     #Check what type of params we working with, and format appropriately
-    if typeof params is 'string'
-      urlParams = 'track='+params
-    else if typeof params is 'object'
-      urlParams = querystring.stringify(params)
+    if typeof params is 'string' then urlParams = 'track='+params
+    else if typeof params is 'object' then urlParams = querystring.stringify(params)
 
     params = {
       uri: 'https://stream.twitter.com/1.1/statuses/filter.json?'+urlParams
@@ -112,8 +102,6 @@ class StreamTweets
     formatResults:  formatResults
     makeRequest:  makeRequest
   }
-
-
 
 
 module.exports = StreamTweets

@@ -50,7 +50,6 @@
     };
 
     formatResults = function(twitterResults) {
-      prepareLocation(twitterResults);
       if (!shouldFormatResults) {
         return twitterResults;
       }
