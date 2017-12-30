@@ -1,5 +1,7 @@
 
 # stream-tweets
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Lissy93/stream-tweets.svg)](https://greenkeeper.io/)
 > A node.js module for streaming Tweets live using the Twitter streaming API's
 
 [![Build Status](https://travis-ci.org/Lissy93/stream-tweets.svg?branch=dev)](https://travis-ci.org/Lissy93/stream-tweets)
@@ -55,13 +57,13 @@ All the options listed on the official [Twitter streaming API documentation] are
 By defualt stream-tweets will return just the usefull stuff. An example output will follow this format:
 ```javascript
 { date: 'Sun Sep 13 08:48:18 +0000 2015',
-  body: 'RT @jsconfasia: Princiya Sequeira; loves JavaScript and can hack D3.js to death! Read more about Princiya on http://t.co/3phJjnObkr http://…',
+  body: 'RT @jsconfasia: Princiya Sequeira; loves JavaScript and can hack D3.js to death! Read more about Princiya on http://t.co/3phJjnObkr http://â€¦',
   location: { geo: null, coordinates: null, place: null },
   'retweet-count': 0,
   'favorited-count': 0,
   lang: 'en' }
 { date: 'Sun Sep 13 08:48:19 +0000 2015',
-  body: 'nodenow: Who likes late night coding? #developer #java #javascript #code #coding #programming #adwords #api… … http://t.co/rvoRGmj9Zx',
+  body: 'nodenow: Who likes late night coding? #developer #java #javascript #code #coding #programming #adwords #apiâ€¦ â€¦ http://t.co/rvoRGmj9Zx',
   location: { geo: null, coordinates: null, place: null },
   'retweet-count': 0,
   'favorited-count': 0,
